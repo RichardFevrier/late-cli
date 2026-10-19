@@ -1770,7 +1770,7 @@ func (m Model) todoPaneView(height int) string {
 	var lines []string
 	focusMarker := ""
 	if m.TodoPaneFocused {
-		focusMarker = "  • focused"
+		focusMarker = "  [focused · esc to unfocus]"
 	}
 	title := lipgloss.NewStyle().
 		Bold(true).
@@ -1813,13 +1813,19 @@ func (m Model) todoPaneView(height int) string {
 	}
 
 	content := strings.Join(lines, "\n")
+	// The pane must be visibly different while focused: elevated background
+	// (applied to the whole box, content lines included) plus a brighter border.
+	bg, border := appBgColor, activeBorder
+	if m.TodoPaneFocused {
+		bg, border = todoFocusedBg, primaryColor
+	}
 	boxStyle := lipgloss.NewStyle().
 		Width(innerWidth).
 		Height(innerHeight).
 		MaxHeight(innerHeight).
 		Border(lipgloss.NormalBorder(), false, false, false, true).
-		BorderForeground(activeBorder).
-		Background(appBgColor)
+		BorderForeground(border).
+		Background(bg)
 
 	return boxStyle.Render(content)
 }

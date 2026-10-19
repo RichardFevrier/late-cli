@@ -24,6 +24,10 @@ var (
 	borderColor  = lipgloss.Color("#1C1F26") // Hairline Divider
 	activeBorder = lipgloss.Color("#2D323E") // Focused / Active Border
 
+	// Todo pane focus surface. Elevated so the pane visibly changes color
+	// while focused (userMsgBg aliases appBgColor and would be invisible).
+	todoFocusedBg = chipBgColor
+
 	// Diff row tints (tool approval previews)
 	diffAddBgColor = lipgloss.Color("#10241C") // Added line: emerald-tinted obsidian
 	diffDelBgColor = lipgloss.Color("#2A1519") // Removed line: coral-tinted obsidian

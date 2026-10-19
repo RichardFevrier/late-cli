@@ -180,6 +180,15 @@ Every finished tool call shows its outcome on the same row: `✓ +3 -1` for an e
 
 ---
 
+## Todos Pane
+
+* The todos pane shows the orchestrator's todo list on the right side of the transcript. It stays closed until the first todos are created and then opens by itself, once; the transcript narrows to make room. `/todos` toggles it at any time, and once you have toggled it yourself it never moves on its own.
+* Set `"show-todo-pane": true` in `config.json` to start with it open, or `false` to keep it closed and never open it by itself.
+* Terminals narrower than 85 columns keep it closed; if you widen the window later, a pane still waiting to open does so.
+* Click inside the pane (or press `Ctrl+T`) to focus it for scrolling; a focused pane is highlighted and marked `[focused · esc to unfocus]`. `Esc` or a click anywhere outside releases focus, and so does the first printable key you type, which still lands in the input, so the pane never swallows your typing.
+
+---
+
 ## Tool Approval
 
 Potentially destructive commands and file changes require approval unless you have already granted permission for that scope.

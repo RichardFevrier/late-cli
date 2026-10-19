@@ -115,6 +115,13 @@ type Config struct {
 
 	SkillsDir string `json:"skills_dir,omitempty"`
 
+	// ShowTodoPane controls the todos side pane. Absent (the default): the
+	// pane starts closed and opens by itself the first time todos are
+	// created. true: it starts open. false: it starts closed and never opens
+	// by itself. Terminals narrower than 85 columns keep it closed; /todos
+	// toggles it either way.
+	ShowTodoPane *bool `json:"show-todo-pane,omitempty"`
+
 	Theme       string            `json:"theme,omitempty"`
 	Models      []ModelSetting    `json:"models,omitempty"`
 	AgentModels map[string]string `json:"agent_models,omitempty"`
@@ -345,6 +352,22 @@ func ResolvePermissionMode(cfg *Config, askFlag, unsupervisedFlag bool) (mode st
 		}
 	}
 	return PermissionModeAskForUserApproval, "", nil
+}
+
+// ResolveShowTodoPane returns whether the todos side pane should be open
+// when the TUI starts: only an explicit "show-todo-pane": true opens it at
+// startup. Absent, the pane starts closed and AutoOpenTodoPane opens it once
+// todos exist. Terminal width is not considered here: the TUI keeps the pane
+// closed below 85 columns.
+func (cfg *Config) ResolveShowTodoPane() bool {
+	return cfg != nil && cfg.ShowTodoPane != nil && *cfg.ShowTodoPane
+}
+
+// AutoOpenTodoPane returns whether the pane opens by itself the first time
+// todos are created. That is the default (entry absent); an explicit
+// "show-todo-pane" value, true or false, takes that decision away.
+func (cfg *Config) AutoOpenTodoPane() bool {
+	return cfg == nil || cfg.ShowTodoPane == nil
 }
 
 func nonEmptyEnv(lookup EnvLookup, key string) (string, bool) {
